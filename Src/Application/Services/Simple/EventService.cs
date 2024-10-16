@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Event;
+using Application.Interfaces.Infrastructure;
 using Application.Interfaces.Services;
 using Core.Entities;
 
@@ -6,7 +7,14 @@ namespace Application.Services.Simple
 {
     public class EventService : IEventUseCase
     {
-        public Task<EventLog> CreateEvent(CreateEventInput createEventInput)
+        private readonly IEventsRepository _eventsRepository;
+
+        public EventService(IEventsRepository eventsRepository)
+        {
+            _eventsRepository = eventsRepository;
+        }
+
+        public async Task<EventLog> CreateEvent(CreateEventInput createEventInput)
         {
             EventLog eventLog = new()
             {
@@ -15,22 +23,17 @@ namespace Application.Services.Simple
                 EventType = createEventInput.EventType,
                 Timestamp = DateTime.Now
             };
-            return Task.FromResult(eventLog);
+
+            var result = await _eventsRepository.InsertEvent(eventLog);
+
+            return result;
         }
 
-        public Task<List<EventLog>> GetEvent(EventFilterInput eventFilterInput)
+        public async Task<List<EventLog>> GetEvent(EventFilterInput eventFilterInput)
         {
-            List<EventLog> listEventLog = new()
-            {
-                new EventLog
-                {
-                    Id = Guid.NewGuid(),
-                    Description = "Demo2",
-                    EventType = "Demo2",
-                    Timestamp = DateTime.Now
-                }
-            };
-            return Task.FromResult(listEventLog);
+            var result = await _eventsRepository.FindAllEvents(eventFilterInput);
+
+            return result;
         }
     }
 }

@@ -7,5 +7,4 @@
         public string EventType { get; set; } // "Api" o "Formulario"
         public DateTime Timestamp { get; set; }
     }
-
 }
