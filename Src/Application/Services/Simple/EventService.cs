@@ -16,12 +16,13 @@ namespace Application.Services.Simple
 
         public async Task<EventLog> CreateEvent(CreateEventInput createEventInput)
         {
+            await createEventInput.Va
             EventLog eventLog = new()
             {
                 Id = Guid.NewGuid(),
                 Description = createEventInput.Description,
                 EventType = createEventInput.EventType,
-                Timestamp = DateTime.Now
+                DateEvent = createEventInput.DateEvent,
             };
 
             var result = await _eventsRepository.InsertEvent(eventLog);

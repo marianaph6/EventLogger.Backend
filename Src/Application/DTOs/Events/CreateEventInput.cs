@@ -4,5 +4,6 @@
     {
         public string Description { get; set; }
         public string EventType { get; set; }
+        public DateTime DateEvent { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace Infrastructure.Services.MongoDB
     {
         private readonly IContext _context;
 
+
         public EventsAdapter(IContext context)
         {
             _context = context;
@@ -29,8 +30,8 @@ namespace Infrastructure.Services.MongoDB
             }
             if (eventFilterInput.StartDate.HasValue && eventFilterInput.EndDate.HasValue)
             {
-                filterDefinition &= Builders<EventLog>.Filter.Gte(e => e.Timestamp, eventFilterInput.StartDate) &
-                                    Builders<EventLog>.Filter.Lte(e => e.Timestamp, eventFilterInput.EndDate);
+                filterDefinition &= Builders<EventLog>.Filter.Gte(e => e.DateEvent, eventFilterInput.StartDate) &
+                                    Builders<EventLog>.Filter.Lte(e => e.DateEvent, eventFilterInput.EndDate);
             }
             return await _context.EventLog.Find(filterDefinition).ToListAsync();
         }

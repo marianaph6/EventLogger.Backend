@@ -5,6 +5,6 @@
         public Guid Id { get; set; }
         public string Description { get; set; }
         public string EventType { get; set; } // "Api" o "Formulario"
-        public DateTime Timestamp { get; set; }
+        public DateTime DateEvent { get; set; }
     }
 }
