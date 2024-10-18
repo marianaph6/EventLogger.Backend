@@ -1,6 +1,13 @@
-﻿namespace RestApiService.EventLogger.Configuration
+﻿using Application;
+
+namespace RestApiService.EventLogger.Configuration
 {
-    public class ServicesConfiguration
+    public static class ServicesConfiguration
     {
+        public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddUseCases();
+            return services;
+        }
     }
 }

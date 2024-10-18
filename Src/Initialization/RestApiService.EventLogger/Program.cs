@@ -1,13 +1,36 @@
-var builder = WebApplication.CreateBuilder(args);
+using Application.Common.Utilities;
+using Infrastructure;
+using RestApiService.EventLogger.Configuration;
 
-// Add services to the container.
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+IWebHostEnvironment environment = builder.Environment;
+IConfiguration configuration = builder.Configuration;
+
+#region Host Configuration
+
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonProvider(environment);
+
+#endregion Host Configuration
+
+#region Service Configuration
+
+AppSettings appSettings = new();
+appSettings = configuration.GetSection("AppSettings").Get<AppSettings>();
+
+builder.Services
+    .AddSingleton(appSettings)
+    .RegisterServices(configuration)
+    .AddMongoDataBase(appSettings.ConnectionString, appSettings.DatabaseName, appSettings);
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+#endregion Service Configuration
+
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
